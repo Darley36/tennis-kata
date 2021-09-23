@@ -1,3 +1,5 @@
+import java.util.List;
+import java.util.Vector;
 
 public class TennisGame1 implements TennisGame {
     
@@ -20,20 +22,31 @@ public class TennisGame1 implements TennisGame {
 
     public String getScore() {
         String score = "";
-        if (scorePlayer1 == scorePlayer2)
-        {
-            score = getEqualityValidated();
+        Vector<Boolean> options = new Vector<>();
+        options.add(scorePlayer1 == scorePlayer2);
+        options.add(scorePlayer1 >=4 || scorePlayer2 >=4);
+        options.add(true);
+        score = getOptionScore(options.indexOf(true), score);
+
+        return score;
+    }
+
+    private String getOptionScore(int i, String score){
+        switch (i){
+            case 0:
+                return getEqualityValidated();
+            case 1:
+                return getValidatedAdvantage();
+            case 2:
+                return getAllScore(score);
         }
-        else if (scorePlayer1 >=4 || scorePlayer2 >=4)
+        return "";
+    }
+
+    private String getAllScore(String score){
+        for (int i=1; i<3; i++)
         {
-            score = getValidatedAdvantage();
-        }
-        else
-        {
-            for (int i=1; i<3; i++)
-            {
-                score = getResult(score, i);
-            }
+            score = getResult(score, i);
         }
         return score;
     }
@@ -45,13 +58,23 @@ public class TennisGame1 implements TennisGame {
     }
 
     private String getValidatedAdvantage() {
-        String score;
         int minusResult = scorePlayer1 - scorePlayer2;
-        if (minusResult==1) score ="Advantage "+player1Name;
-        else if (minusResult ==-1) score ="Advantage "+player2Name;
-        else if (minusResult>=2) score = "Win for player1";
-        else score ="Win for player2";
-        return score;
+        return getMessageByMinusResult(getListOfBooleans(minusResult));
+    }
+
+    private int getListOfBooleans(int minusResult) {
+        Vector<Boolean> conditions = new Vector<>();
+        conditions.add(minusResult ==1);
+        conditions.add(minusResult ==-1);
+        conditions.add(minusResult >=2);
+        conditions.add(minusResult <=2);
+        return conditions.indexOf(true);
+    }
+
+    private String getMessageByMinusResult(int option){
+        String[] alternatives = {"Advantage "+player1Name,"Advantage "+player2Name,"Win for player1","Win for player2"};
+        return alternatives[option];
+
     }
 
     private String getResult(String score, int i) {
@@ -62,24 +85,7 @@ public class TennisGame1 implements TennisGame {
     }
 
     private String getScoreResult(String score, int tempScore) {
-        switch(tempScore)
-        {
-            case 0:
-                score +="Love";
-                break;
-            case 1:
-                score +="Fifteen";
-                break;
-            case 2:
-                score +="Thirty";
-                break;
-            case 3:
-                score +="Forty";
-                break;
-            default:
-                break;
-
-        }
-        return score;
+        String[] alternatives = {"Love","Fifteen","Thirty","Forty"};
+        return score.concat(alternatives[tempScore]);
     }
 }
