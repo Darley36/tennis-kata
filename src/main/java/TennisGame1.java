@@ -22,30 +22,11 @@ public class TennisGame1 implements TennisGame {
         String score = "";
         if (scorePlayer1 == scorePlayer2)
         {
-            switch (scorePlayer1)
-            {
-                case 0:
-                        score = "Love-All";
-                    break;
-                case 1:
-                        score = "Fifteen-All";
-                    break;
-                case 2:
-                        score = "Thirty-All";
-                    break;
-                default:
-                        score = "Deuce";
-                    break;
-                
-            }
+            score = getEqualityValidated();
         }
         else if (scorePlayer1 >=4 || scorePlayer2 >=4)
         {
-            int minusResult = scorePlayer1 - scorePlayer2;
-            if (minusResult==1) score ="Advantage "+player1Name;
-            else if (minusResult ==-1) score ="Advantage "+player2Name;
-            else if (minusResult>=2) score = "Win for player1";
-            else score ="Win for player2";
+            score = getValidatedAdvantage();
         }
         else
         {
@@ -57,10 +38,30 @@ public class TennisGame1 implements TennisGame {
         return score;
     }
 
+    private String getEqualityValidated() {
+        String[] alternatives = {"Love-All","Fifteen-All","Thirty-All","Deuce"};
+        if (scorePlayer1<3) return alternatives[scorePlayer1];
+        return "Deuce";
+    }
+
+    private String getValidatedAdvantage() {
+        String score;
+        int minusResult = scorePlayer1 - scorePlayer2;
+        if (minusResult==1) score ="Advantage "+player1Name;
+        else if (minusResult ==-1) score ="Advantage "+player2Name;
+        else if (minusResult>=2) score = "Win for player1";
+        else score ="Win for player2";
+        return score;
+    }
+
     private String getResult(String score, int i) {
         int tempScore;
         if (i ==1) tempScore = scorePlayer1;
         else { score +="-"; tempScore = scorePlayer2;}
+        return getScoreResult(score, tempScore);
+    }
+
+    private String getScoreResult(String score, int tempScore) {
         switch(tempScore)
         {
             case 0:
@@ -75,6 +76,9 @@ public class TennisGame1 implements TennisGame {
             case 3:
                 score +="Forty";
                 break;
+            default:
+                break;
+
         }
         return score;
     }
