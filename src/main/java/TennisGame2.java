@@ -42,24 +42,23 @@ public class TennisGame2 implements TennisGame
             player2Name=playerPosition(scorePlayer2);
             score = player1Name + "-" + player2Name;
         }
-        
-        if (scorePlayer1 > scorePlayer2 && scorePlayer2 >= 3)
-        {
-            score = "Advantage player1";
-        }
-        
-        if (scorePlayer2 > scorePlayer1 && scorePlayer1 >= 3)
-        {
-            score = "Advantage player2";
-        }
-        
-        if (scorePlayer1 >=4 && scorePlayer2 >=0 && (scorePlayer1 - scorePlayer2)>=2)
-        {
-            score = "Win for player1";
-        }
-        if (scorePlayer2 >=4 && scorePlayer1 >=0 && (scorePlayer2 - scorePlayer1)>=2)
-        {
-            score = "Win for player2";
+        if(scoreGreatherThanFour()) {
+            int minusResult = scorePlayer1-scorePlayer2;
+            //getAdvantage(minusResult);
+            if (scorePlayer1 > scorePlayer2 ) {
+                score = "Advantage player1";
+            }
+
+            if (scorePlayer2 > scorePlayer1 ) {
+                score = "Advantage player2";
+            }
+
+            if ((scorePlayer1 - scorePlayer2) >= 2) {
+                score = "Win for player1";
+            }
+            if ((scorePlayer2 - scorePlayer1) >= 2) {
+                score = "Win for player2";
+            }
         }
         return score;
     }
@@ -71,6 +70,18 @@ public class TennisGame2 implements TennisGame
         }
         if (returnConditions() && scorePlayer1 >=3){
             score = getEquality(3);
+        }
+        return score;
+    }
+
+    private boolean scoreGreatherThanFour(){
+        return scorePlayer1 >= 4 || scorePlayer2 >=4;
+    }
+
+    private String getAdvantage(int minusResult){
+        String score="";
+        if(minusResult == 1){
+            score = "Advantage player1";
         }
         return score;
     }
