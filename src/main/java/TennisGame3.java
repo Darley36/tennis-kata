@@ -12,7 +12,6 @@ public class TennisGame3 implements TennisGame {
     }
 
     public String getScore() {
-        String score;
         if (getIfEqual()) {
             return getEqualityScore();
         }
@@ -38,8 +37,16 @@ public class TennisGame3 implements TennisGame {
 
     private String getScoreAdvantage() {
         String score;
-        score = scorePlayer1 > scorePlayer2 ? player1Name : player2Name;
-        return ((scorePlayer1 - scorePlayer2)*(scorePlayer1 - scorePlayer2) == 1) ? "Advantage " + score : "Win for " + score;
+        score = setScoreByPlayer();
+        return getAdvantageCondition() ? "Advantage " + score : "Win for " + score;
+    }
+
+    private boolean getAdvantageCondition() {
+        return Math.pow((scorePlayer1 - scorePlayer2),2) == 1;
+    }
+
+    private String setScoreByPlayer() {
+        return scorePlayer1 > scorePlayer2 ? player1Name : player2Name;
     }
 
     private String getEqualityScore() {
